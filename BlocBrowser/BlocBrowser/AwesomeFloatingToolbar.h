@@ -13,9 +13,8 @@
 @protocol AwesomeFloatingToolbarDelegate <NSObject>
 
 @optional
-
 - (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didSelectButtonWithTitle:(NSString *)title;
-
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPanWithOffset:(CGPoint)offset;
 @end
 
 @interface AwesomeFloatingToolbar : UIView
