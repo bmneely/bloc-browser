@@ -205,5 +205,24 @@
     }
 }
 
+- (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToLongPress:(BOOL)pressed {
+    NSMutableArray *colorsArray = [[NSMutableArray alloc] init];
+    for (UILabel *label in toolbar.labels) {
+        NSUInteger currentLabelIndex = [toolbar.labels indexOfObject:label];
+        
+        currentLabelIndex = (currentLabelIndex + 1) % 4;
+
+        UIColor *colorForThisLabel = [toolbar.colors objectAtIndex:currentLabelIndex];
+        
+        [colorsArray addObject:colorForThisLabel];
+        
+        label.backgroundColor = colorForThisLabel;
+        
+    }
+    
+    toolbar.colors = colorsArray;
+    
+    [toolbar setNeedsDisplay];
+}
 
 @end
