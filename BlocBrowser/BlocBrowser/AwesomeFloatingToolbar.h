@@ -23,11 +23,10 @@
 @interface AwesomeFloatingToolbar : UIView
 
 @property (nonatomic, strong) NSArray *colors;
-@property (nonatomic, strong) NSArray *labels;
+@property (nonatomic, strong) NSArray *buttons;
 
 
 - (instancetype) initWithFourTitles:(NSArray *)titles;
-
 - (void) setEnabled:(BOOL)enabled forButtonWithTitle:(NSString *)title;
 
 @property (nonatomic, weak) id <AwesomeFloatingToolbarDelegate> delegate;

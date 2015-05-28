@@ -51,6 +51,7 @@
     }
 
     self.view = mainView;
+    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
 }
 
 - (void)viewDidLoad {
@@ -75,7 +76,7 @@
     self.textField.frame = CGRectMake(0, 0, width, itemHeight);
     self.webView.frame = CGRectMake(0, CGRectGetMaxY(self.textField.frame), width, browserHeight);
     
-    self.awesomeToolbar.frame = CGRectMake(20, 100, 280, 60);
+    
 }
 
 #pragma mark - UITextFieldDelegate
@@ -189,34 +190,22 @@
 }
 
 - (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToPinch:(CGFloat)scale {
-    CGPoint startingPoint = toolbar.frame.origin;
-    
-    CGFloat newWidth = CGRectGetWidth(toolbar.frame) * scale;
-    CGFloat newHeight = CGRectGetHeight(toolbar.frame) * scale;
-    
-    NSLog(@"old width: %lf", CGRectGetWidth(toolbar.frame));
-    NSLog(@"new width: %lf", newWidth);
-
-    
-    CGRect potentialNewFrame = CGRectMake(startingPoint.x, startingPoint.y, newWidth, newHeight);
-    
-    if (CGRectContainsRect(self.view.bounds, potentialNewFrame)) {
-        toolbar.frame = potentialNewFrame;
-    }
+    CGAffineTransform transform = CGAffineTransformMakeScale(scale, scale);
+    toolbar.transform = transform;
 }
 
 - (void) floatingToolbar:(AwesomeFloatingToolbar *)toolbar didTryToLongPress:(BOOL)pressed {
     NSMutableArray *colorsArray = [[NSMutableArray alloc] init];
-    for (UILabel *label in toolbar.labels) {
-        NSUInteger currentLabelIndex = [toolbar.labels indexOfObject:label];
+    for (UIButton *button in toolbar.buttons) {
+        NSUInteger currentButtonIndex = [toolbar.buttons indexOfObject:button];
         
-        currentLabelIndex = (currentLabelIndex + 1) % 4;
+        currentButtonIndex = (currentButtonIndex + 1) % 4;
 
-        UIColor *colorForThisLabel = [toolbar.colors objectAtIndex:currentLabelIndex];
+        UIColor *colorForThisButton = [toolbar.colors objectAtIndex:currentButtonIndex];
         
-        [colorsArray addObject:colorForThisLabel];
+        [colorsArray addObject:colorForThisButton];
         
-        label.backgroundColor = colorForThisLabel;
+        button.backgroundColor = colorForThisButton;
         
     }
     
