@@ -49,6 +49,8 @@
             button.backgroundColor = colorForThisButton;
             button.titleLabel.textColor = [UIColor whiteColor];
             
+            [button addTarget:self action:@selector(tapFired:) forControlEvents:UIControlEventTouchUpInside];
+
             [buttonsArray addObject:button];
         }
         
@@ -106,61 +108,13 @@
     }
 }
 
-#pragma mark - Touch Handling
-
-- (UIButton *) buttonFromTouches:(NSSet *)touches withEvent:(UIEvent *)event {
-    UITouch *touch = [touches anyObject];
-    CGPoint location = [touch locationInView:self];
-    UIView *subview = [self hitTest:location withEvent:event];
-    
-    if ([subview isKindOfClass:[UIButton class]]) {
-        return (UIButton * ) subview;
-    } else if ([subview isKindOfClass:[AwesomeFloatingToolbar class]]) {
-        NSLog(@"Why do we get here and not to the button?!");
-        return nil;
-    } else {
-        NSLog(@"adfadf");
-        return nil;
-    }
+#pragma mark - Button Handling
+-(void)tapFired:(UIButton *)sender
+{
+    NSLog(@"BtnClick");
+    NSLog(@"%@ fired", sender.titleLabel.text);
 }
 
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
-    UIButton *button = [self buttonFromTouches:touches withEvent:event];
-    
-    self.currentButton = button;
-    self.currentButton.alpha = 0.5;
-}
-
-- (void)touchesMoved:(NSSet *)touches withEvent:(UIEvent *)event {
-    UIButton *button = [self buttonFromTouches:touches withEvent:event];
-    
-    if (self.currentButton != button) {
-        // The button being touched is no longer the initial button
-        self.currentButton.alpha = 1;
-    } else {
-        // The button being touched is the initial button
-        self.currentButton.alpha = 0.5;
-    }
-}
-
-- (void)touchesEnded:(NSSet *)touches withEvent:(UIEvent *)event {
-    UIButton *button = [self buttonFromTouches:touches withEvent:event];
-    
-    if (self.currentButton == button) {
-        NSLog(@"Button tapped: %@", self.currentButton.titleLabel.text);
-        
-        if ([self.delegate respondsToSelector:@selector(floatingToolbar:didSelectButtonWithTitle:)]) {
-            [self.delegate floatingToolbar:self didSelectButtonWithTitle:self.currentButton.titleLabel.text];
-        }
-    }
-    self.currentButton.alpha = 1;
-    self.currentButton = nil;
-}
-
-- (void)touchesCancelled:(NSSet *)touches withEvent:(UIEvent *)event {
-    self.currentButton.alpha = 1;
-    self.currentButton = nil;
-}
 
 #pragma mark - Gesture Recognizers
 
