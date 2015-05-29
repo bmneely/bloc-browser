@@ -49,7 +49,8 @@
             button.backgroundColor = colorForThisButton;
             button.titleLabel.textColor = [UIColor whiteColor];
             
-            [button addTarget:self action:@selector(tapFired:) forControlEvents:UIControlEventTouchUpInside];
+            [button addTarget:self action:@selector(touchDownFired:) forControlEvents:UIControlEventTouchDown];
+            [button addTarget:self action:@selector(touchUpFired:) forControlEvents:UIControlEventTouchUpInside];
 
             [buttonsArray addObject:button];
         }
@@ -104,15 +105,22 @@
     if (index != NSNotFound) {
         UIButton *button = [self.buttons objectAtIndex:index];
         [button setEnabled:enabled];
+        button.userInteractionEnabled = YES;
         button.alpha = enabled ? 1.0 : 0.25;
     }
 }
 
 #pragma mark - Button Handling
--(void)tapFired:(UIButton *)sender
+-(void)touchDownFired:(UIButton *)sender
 {
-    NSLog(@"BtnClick");
-    NSLog(@"%@ fired", sender.titleLabel.text);
+    sender.alpha = .9;
+}
+
+-(void)touchUpFired:(UIButton *)sender
+{
+    if ([self.delegate respondsToSelector:@selector(floatingToolbar:didSelectButtonWithTitle:)]) {
+        [self.delegate floatingToolbar:self didSelectButtonWithTitle:sender.titleLabel.text];
+    }
 }
 
 
